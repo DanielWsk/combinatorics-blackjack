@@ -1,6 +1,6 @@
 import random
 import os
-import time
+import math
  
 # The Card class definition
 class Card:
@@ -130,10 +130,35 @@ def print_cards(cards, hidden):
  
     print()
 
+# Function that counts deck
+def count_deck(deck):
+    total_number_of_cards=len(deck)
+    cards_of_2 = sum(i.card_value==2 for i in deck)
+    cards_of_3 = sum(i.card_value==3 for i in deck)
+    cards_of_4 = sum(i.card_value==4 for i in deck)
+    cards_of_5 = sum(i.card_value==5 for i in deck)
+    cards_of_6 = sum(i.card_value==6 for i in deck)
+    cards_of_7 = sum(i.card_value==7 for i in deck)
+    cards_of_8 = sum(i.card_value==8 for i in deck)
+    cards_of_9 = sum(i.card_value==9 for i in deck)
+    cards_of_10 = sum(i.card_value==10 for i in deck)
+    cards_of_11 = sum(i.card_value==11 for i in deck)
+    print(cards_of_2)
+    print(cards_of_3)
+    print(cards_of_4)
+    print(cards_of_5)
+    print(cards_of_6)
+    print(cards_of_7)
+    print(cards_of_8)
+    print(cards_of_9)
+    print(cards_of_10)
+    print(cards_of_11)
+    print(total_number_of_cards)
+
 # Function for a single game of blackjack
 def blackjack_game(deck):
 
-    print(deck)
+    count_deck(deck)
  
     # Cards for both dealer and player
     player_cards = []
@@ -213,6 +238,8 @@ def blackjack_game(deck):
     print("PLAYER CARDS: ")
     print_cards(player_cards, False)
     print("PLAYER SCORE = ", player_score)
+
+    count_deck(deck)
  
     # Managing the player moves
     while player_score < 21:

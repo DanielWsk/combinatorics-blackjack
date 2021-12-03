@@ -1,3 +1,4 @@
+
 import random
 import os
 import time
@@ -130,10 +131,35 @@ def print_cards(cards, hidden):
  
     print()
 
+# Function that counts deck
+def count_deck(deck):
+    total_number_of_cards=len(deck)
+    cards_of_2 = sum(i.card_value==2 for i in deck)
+    cards_of_3 = sum(i.card_value==3 for i in deck)
+    cards_of_4 = sum(i.card_value==4 for i in deck)
+    cards_of_5 = sum(i.card_value==5 for i in deck)
+    cards_of_6 = sum(i.card_value==6 for i in deck)
+    cards_of_7 = sum(i.card_value==7 for i in deck)
+    cards_of_8 = sum(i.card_value==8 for i in deck)
+    cards_of_9 = sum(i.card_value==9 for i in deck)
+    cards_of_10 = sum(i.card_value==10 for i in deck)
+    cards_of_11 = sum(i.card_value==11 for i in deck)
+    print(cards_of_2)
+    print(cards_of_3)
+    print(cards_of_4)
+    print(cards_of_5)
+    print(cards_of_6)
+    print(cards_of_7)
+    print(cards_of_8)
+    print(cards_of_9)
+    print(cards_of_10)
+    print(cards_of_11)
+    print(total_number_of_cards)
+
 # Function for a single game of blackjack
 def blackjack_game(deck):
 
-    print(deck)
+    count_deck(deck)
  
     # Cards for both dealer and player
     player_cards = []
@@ -163,12 +189,12 @@ def blackjack_game(deck):
                 player_score -= 10
  
         # Print player cards and score      
-        print("PLAYER CARDS: ")
-        print_cards(player_cards, False)
+        # print("PLAYER CARDS: ")
+        # print_cards(player_cards, False)
         print("PLAYER SCORE = ", player_score)
  
-        input()
- 
+        # input()
+        count_deck(deck)
         # Randomly dealing a card
         dealer_card = random.choice(deck)
         dealer_cards.append(dealer_card)
@@ -180,10 +206,10 @@ def blackjack_game(deck):
         # Print dealer cards and score, keeping in mind to hide the second card and score
         print("DEALER CARDS: ")
         if len(dealer_cards) == 1:
-            print_cards(dealer_cards, False)
+            # print_cards(dealer_cards, False)
             print("DEALER SCORE = ", dealer_score)
         else:
-            print_cards(dealer_cards[:-1], True)    
+            # print_cards(dealer_cards[:-1], True)    
             print("DEALER SCORE = ", dealer_score - dealer_cards[-1].card_value)
  
  
@@ -193,87 +219,87 @@ def blackjack_game(deck):
                 dealer_cards[1].card_value = 1
                 dealer_score -= 10
  
-        input()
- 
+        # input()
+        count_deck(deck)
     # Player gets a blackjack   
     if player_score == 21:
         print("PLAYER HAS A BLACKJACK!!!!")
         print("PLAYER WINS!!!!")
         quit()
  
-    clear()
+    # clear()
  
     # Print dealer and player cards
-    print("DEALER CARDS: ")
-    print_cards(dealer_cards[:-1], True)
+    # print("DEALER CARDS: ")
+    # print_cards(dealer_cards[:-1], True)
     print("DEALER SCORE = ", dealer_score - dealer_cards[-1].card_value)
  
     print() 
  
-    print("PLAYER CARDS: ")
-    print_cards(player_cards, False)
+    # print("PLAYER CARDS: ")
+    # print_cards(player_cards, False)
     print("PLAYER SCORE = ", player_score)
  
     # Managing the player moves
     while player_score < 21:
-        choice = input("Enter H to Hit or S to Stand : ")
+        # choice = input("Enter H to Hit or S to Stand : ")
  
-        # Sanity checks for player's choice
-        if len(choice) != 1 or (choice.upper() != 'H' and choice.upper() != 'S'):
-            clear()
-            print("Wrong choice!! Try Again")
+        # # Sanity checks for player's choice
+        # if len(choice) != 1 or (choice.upper() != 'H' and choice.upper() != 'S'):
+        #     clear()
+        #     print("Wrong choice!! Try Again")
  
-        # If player decides to HIT
-        if choice.upper() == 'H':
+        # # If player decides to HIT
+        # if choice.upper() == 'H':
  
-            # Dealing a new card
-            player_card = random.choice(deck)
-            player_cards.append(player_card)
-            deck.remove(player_card)
+        # Dealing a new card
+        player_card = random.choice(deck)
+        player_cards.append(player_card)
+        deck.remove(player_card)
+
+        # Updating player score
+        player_score += player_card.card_value
+
+        # Updating player score in case player's card have ace in them
+        c = 0
+        while player_score > 21 and c < len(player_cards):
+            if player_cards[c].card_value == 11:
+                player_cards[c].card_value = 1
+                player_score -= 10
+                c += 1
+            else:
+                c += 1 
  
-            # Updating player score
-            player_score += player_card.card_value
- 
-            # Updating player score in case player's card have ace in them
-            c = 0
-            while player_score > 21 and c < len(player_cards):
-                if player_cards[c].card_value == 11:
-                    player_cards[c].card_value = 1
-                    player_score -= 10
-                    c += 1
-                else:
-                    c += 1 
- 
-            clear()     
+            # clear()     
  
             # Print player and dealer cards
-            print("DEALER CARDS: ")
-            print_cards(dealer_cards[:-1], True)
+            # print("DEALER CARDS: ")
+            # print_cards(dealer_cards[:-1], True)
             print("DEALER SCORE = ", dealer_score - dealer_cards[-1].card_value)
  
             print()
  
-            print("PLAYER CARDS: ")
-            print_cards(player_cards, False)
+            # print("PLAYER CARDS: ")
+            # print_cards(player_cards, False)
             print("PLAYER SCORE = ", player_score)
              
-        # If player decides to Stand
-        if choice.upper() == 'S':
-            break
+        # # If player decides to Stand
+        # if choice.upper() == 'S':
+        #     break
  
- 
-    clear() 
+    count_deck(deck)
+    # clear() 
  
     # Print player and dealer cards
-    print("PLAYER CARDS: ")
-    print_cards(player_cards, False)
+    # print("PLAYER CARDS: ")
+    # print_cards(player_cards, False)
     print("PLAYER SCORE = ", player_score)
  
     print()
     print("DEALER IS REVEALING THE CARDS....")
  
-    print("DEALER CARDS: ")
-    print_cards(dealer_cards, False)
+    # print("DEALER CARDS: ")
+    # print_cards(dealer_cards, False)
     print("DEALER SCORE = ", dealer_score)
  
     # Check if player has a Blackjack
@@ -286,7 +312,7 @@ def blackjack_game(deck):
         print("PLAYER BUSTED!!! GAME OVER!!!")
         quit()
  
-    input() 
+    # input() 
  
     # Managing the dealer moves
     while dealer_score < 17:
@@ -313,17 +339,17 @@ def blackjack_game(deck):
                 c += 1
  
         # print player and dealer cards
-        print("PLAYER CARDS: ")
-        print_cards(player_cards, False)
+        # print("PLAYER CARDS: ")
+        # print_cards(player_cards, False)
         print("PLAYER SCORE = ", player_score)
  
         print()
  
-        print("DEALER CARDS: ")
-        print_cards(dealer_cards, False)
+        # print("DEALER CARDS: ")
+        # print_cards(dealer_cards, False)
         print("DEALER SCORE = ", dealer_score)      
  
-        input()
+        # input()
  
     # Dealer busts
     if dealer_score > 21:        
