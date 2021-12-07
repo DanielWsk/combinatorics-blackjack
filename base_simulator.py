@@ -17,120 +17,6 @@ class Card:
         # Score Value for the Card like 10 for King
         self.card_value = card_value
  
-# Clear the terminal
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
- 
-# Function to print the cards
-def print_cards(cards, hidden):
-         
-    s = ""
-    for card in cards:
-        s = s + "\t ________________"
-    if hidden:
-        s += "\t ________________"
-    print(s)
- 
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|                |"    
-    print(s)
- 
-    s = ""
-    for card in cards:
-        if card.value == '10':
-            s = s + "\t|  {}            |".format(card.value)
-        else:
-            s = s + "\t|  {}             |".format(card.value)  
-    if hidden:
-        s += "\t|                |"    
-    print(s)
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|      * *       |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|    *     *     |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|   *       *    |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|   *       *    |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|       {}        |".format(card.suit)
-    if hidden:
-        s += "\t|          *     |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|         *      |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|        *       |"
-    print(s)
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|                |"
-    print(s)
- 
-    s = ""
-    for card in cards:
-        s = s + "\t|                |"
-    if hidden:
-        s += "\t|                |"
-    print(s)    
- 
-    s = ""
-    for card in cards:
-        if card.value == '10':
-            s = s + "\t|            {}  |".format(card.value)
-        else:
-            s = s + "\t|            {}   |".format(card.value)
-    if hidden:
-        s += "\t|        *       |"        
-    print(s)    
-         
-    s = ""
-    for card in cards:
-        s = s + "\t|________________|"
-    if hidden:
-        s += "\t|________________|"
-    print(s)        
- 
-    print()
-
 # Function that reshuffles deck
 def shuffle():
     # The type of suit
@@ -173,17 +59,6 @@ def count_deck(deck):
     cards_of_9 = sum(i.card_value==9 for i in deck)
     cards_of_10 = sum(i.card_value==10 for i in deck)
     cards_of_11 = sum(i.card_value==11 for i in deck)
-    print("Cards of 2: " + str(cards_of_2))
-    print("Cards of 3: " + str(cards_of_3))
-    print("Cards of 4: " + str(cards_of_4))
-    print("Cards of 5: " + str(cards_of_5))
-    print("Cards of 6: " + str(cards_of_6))
-    print("Cards of 7: " + str(cards_of_7))
-    print("Cards of 8: " + str(cards_of_8))
-    print("Cards of 9: " + str(cards_of_9))
-    print("Cards of 10: " + str(cards_of_10))
-    print("Cards of 11: " + str(cards_of_11))
-    print("Cards of 1: " + str(cards_of_1))
     print("Total number of cards: " + str(total_number_of_cards))
 
 # Function to test probability of blackjack of initial hand
@@ -194,9 +69,10 @@ def chances_of_blackjack(deck):
     total_comb = comb(total_number_of_cards,2)
     comb_of_bj = comb((cards_of_10 * cards_of_11),1)
     probability = comb_of_bj/total_comb
-    probability = str(round(probability * 100, 2))
+    probability = round(probability * 100, 2)
 
-    print("Your probablity of hitting blackjack is " + probability + "%")
+    print("Your probablity of hitting blackjack is " + str(probability) + "%")
+    return probability
 
 # Function for determining chances of busting
 def chances_of_busting(deck, players_score):
@@ -208,8 +84,9 @@ def chances_of_busting(deck, players_score):
     total_number_of_cards=len(deck)
     danger_cards = total_number_of_cards - safe_cards
     probability = danger_cards/total_number_of_cards
-    probability = str(round(probability * 100, 2))
-    print ("Your chances of busting is " +probability + "%")
+    probability = round(probability * 100, 2)
+    print ("Your chances of busting is " + str(probability) + "%")
+    return probability
 
 # Function for probability if will be between 12 and 16 of initial hand 
 def initial_hand_chances(deck):
@@ -217,16 +94,15 @@ def initial_hand_chances(deck):
     card_values = []
     for i in deck:
         card_values.append(i.card_value)
-    count_deck(deck)
-    print (card_values)
     for i in itertools.combinations(card_values,2):
         if sum(i) in range(12,17):
             bad_range += 1
     total_number_of_cards=len(deck)
     total_comb = comb(total_number_of_cards,2)
     probability = bad_range/total_comb
-    probability = str(round(probability * 100, 2))
-    print ("Your chances of being in the bad zone is " +probability + "%")
+    probability = round(probability * 100, 2)
+    print ("Your chances of being in the bad zone is " + str(probability) + "%")
+    return probability
 
 # Function to see if 3rd card will be between 17 and 21
 # def third_card_chances(deck, player_score):
@@ -246,25 +122,35 @@ def blackjack_game(deck):
     # Number of rounds won by dealer and player
     global player_rounds_won
     global dealer_rounds_won
+    global rounds_tied
+    global rounds_skipped
+    global rounds_busted
 
-    if blackjack_game.counter == 3:
+    if blackjack_game.counter == 900:
         print("You won " + str(player_rounds_won) + " times!")
         print("The dealer won " + str(dealer_rounds_won) + " times!")
+        print("It was a tie " + str(rounds_tied) + " times!")
+        print("Rounds skipped: " + str(rounds_skipped))
+        print("Rounds busted: " + str(rounds_busted))
         quit()
 
     blackjack_game.counter += 1
     print ("Game Number: " + str(blackjack_game.counter))
 
-    chances_of_blackjack(deck)
-    initial_hand_chances(deck)
+    count_deck(deck)
+    if len(deck) < 15:
+            deck = shuffle()
 
-    to_play = input("Would you like to play the hand? Y/N: ")
-    if to_play.upper() == "N":
-        random_number = random.randint(4,6)
-        for i in range(1, random_number):
-            dead_card = random.choice(deck)
-            deck.remove(dead_card)
-        blackjack_game(deck)
+    chances_of_bj = chances_of_blackjack(deck)
+    initial_hand = initial_hand_chances(deck)
+
+    # if initial_hand > 45:
+    #     rounds_skipped += 1
+    #     random_number = random.randint(4,6)
+    #     for i in range(1, random_number):
+    #         dead_card = random.choice(deck)
+    #         deck.remove(dead_card)
+    #     blackjack_game(deck)
 
     print ("Dealings hands...")
  
@@ -301,17 +187,6 @@ def blackjack_game(deck):
             if dealer_cards[0].card_value == 11 and dealer_cards[1].card_value == 11:
                 dealer_cards[1].card_value = 1
                 dealer_score -= 10
- 
-    # Print dealer and player cards
-    print("DEALER CARDS: ")
-    print_cards(dealer_cards[:-1], True)
-    print("DEALER SCORE = ", dealer_score - dealer_cards[-1].card_value)
- 
-    print() 
- 
-    print("PLAYER CARDS: ")
-    print_cards(player_cards, False)
-    print("PLAYER SCORE = ", player_score)
 
     # Player gets a blackjack   
     if player_score == 21:
@@ -319,19 +194,14 @@ def blackjack_game(deck):
         print("PLAYER WINS!!!!")
         player_rounds_won += 1
         blackjack_game(deck)
+
+    target = 17
  
     # Managing the player moves
     while player_score < 21:
         chances_of_busting(deck, player_score)
-        choice = input("Enter H to Hit or S to Stand : ")
- 
-        # Sanity checks for player's choice
-        if len(choice) != 1 or (choice.upper() != 'H' and choice.upper() != 'S'):
-            clear()
-            print("Wrong choice!! Try Again")
- 
-        # If player decides to HIT
-        if choice.upper() == 'H':
+
+        if player_score < target:
 
             # Checking size of deck
             if len(deck) < 1:
@@ -354,38 +224,10 @@ def blackjack_game(deck):
                     c += 1
                 else:
                     c += 1 
- 
-            clear()     
- 
-            # Print player and dealer cards
-            print("DEALER CARDS: ")
-            print_cards(dealer_cards[:-1], True)
-            print("DEALER SCORE = ", dealer_score - dealer_cards[-1].card_value)
- 
-            print()
- 
-            print("PLAYER CARDS: ")
-            print_cards(player_cards, False)
-            print("PLAYER SCORE = ", player_score)
              
         # If player decides to Stand
-        if choice.upper() == 'S':
+        if player_score >= target:
             break
- 
- 
-    clear() 
- 
-    # Print player and dealer cards
-    print("PLAYER CARDS: ")
-    print_cards(player_cards, False)
-    print("PLAYER SCORE = ", player_score)
- 
-    print()
-    print("DEALER IS REVEALING THE CARDS....")
- 
-    print("DEALER CARDS: ")
-    print_cards(dealer_cards, False)
-    print("DEALER SCORE = ", dealer_score)
  
     # Check if player has a Blackjack
     if player_score == 21:
@@ -396,16 +238,13 @@ def blackjack_game(deck):
     # Check if player busts
     if player_score > 21:
         print("PLAYER BUSTED!!! GAME OVER!!!")
+        rounds_busted += 1
         dealer_rounds_won += 1
         blackjack_game(deck)
  
-    input() 
  
     # Managing the dealer moves
     while dealer_score < 17:
-        clear() 
- 
-        print("DEALER DECIDES TO HIT.....")
 
         # Checking size of deck
         if len(deck) < 1:
@@ -427,20 +266,7 @@ def blackjack_game(deck):
                 dealer_score -= 10
                 c += 1
             else:
-                c += 1
- 
-        # print player and dealer cards
-        print("PLAYER CARDS: ")
-        print_cards(player_cards, False)
-        print("PLAYER SCORE = ", player_score)
- 
-        print()
- 
-        print("DEALER CARDS: ")
-        print_cards(dealer_cards, False)
-        print("DEALER SCORE = ", dealer_score)      
- 
-        input()
+                c += 1    
  
     # Dealer busts
     if dealer_score > 21:        
@@ -457,6 +283,7 @@ def blackjack_game(deck):
     # TIE Game
     if dealer_score == player_score:
         print("TIE GAME!!!!")
+        rounds_tied +=1
  
     # Player Wins
     elif player_score > dealer_score:
@@ -477,10 +304,15 @@ if __name__ == '__main__':
     # Number of rounds won by dealer and player
     global player_rounds_won
     global dealer_rounds_won
+    global rounds_tied
+    global rounds_skipped
+    global rounds_busted
     player_rounds_won = 0
     dealer_rounds_won = 0
+    rounds_tied = 0
+    rounds_skipped = 0
+    rounds_busted = 0
  
     deck = shuffle()
 
-    clear()
     blackjack_game(deck)    
