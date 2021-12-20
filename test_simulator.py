@@ -2,6 +2,7 @@ import random
 import os
 import itertools
 from math import comb
+import sys
  
 # The Card class definition
 class Card:
@@ -88,6 +89,24 @@ def chances_of_busting(deck, players_score):
     print ("Your chances of busting is " + str(probability) + "%")
     return probability
 
+# Function for determining chances of dealer landing in trap zone
+def chances_of_dealer_trap(deck, dealers_score):
+    for i in deck:
+        if i.card_value == 11:
+            i.card_value = 1
+    card_values = []
+    trap_zone = 0
+    for i in deck:
+        card_values.append(i.card_value)
+    for i in card_values:
+        if i + dealers_score <= 17 and i + dealers_score >= 12:
+            trap_zone += 1
+    total_number_of_cards=len(deck)
+    probability = trap_zone/total_number_of_cards
+    probability = round(probability * 100, 2)
+    print ("Dealer's chances of being in the bad zone is " + str(probability) + "%")
+    return probability
+
 # Function for probability if will be between 12 and 16 of initial hand 
 def initial_hand_chances(deck):
     bad_range = 0
@@ -125,13 +144,21 @@ def blackjack_game(deck):
     global rounds_tied
     global rounds_skipped
     global rounds_busted
+    global rounds_missed
+    global rounds_expected
+    global rounds_blackjack
+    global rounds_21
 
-    if blackjack_game.counter == 900:
+    if blackjack_game.counter == 2000:
         print("Player: " + str(player_rounds_won))
         print("Dealer: " + str(dealer_rounds_won))
         print("Tie: " + str(rounds_tied))
         print("Skipped: " + str(rounds_skipped))
         print("Busted: " + str(rounds_busted))
+        # print("Missed: " + str(rounds_missed))
+        # print("Expected: " + str(rounds_expected))
+        # print("Blackjack: " + str(rounds_blackjack))
+        # print("21: " + str(rounds_21))
         quit()
 
     blackjack_game.counter += 1
@@ -152,13 +179,13 @@ def blackjack_game(deck):
             deck.remove(dead_card)
         blackjack_game(deck)
 
-    if len(deck) > 40 and chances_of_bj < 4:
-        rounds_skipped += 1
-        random_number = random.randint(4,6)
-        for i in range(1, random_number):
-            dead_card = random.choice(deck)
-            deck.remove(dead_card)
-        blackjack_game(deck)
+    # if len(deck) > 40 and chances_of_bj < 2.5:
+    #     rounds_skipped += 1
+    #     random_number = random.randint(4,6)
+    #     for i in range(1, random_number):
+    #         dead_card = random.choice(deck)
+    #         deck.remove(dead_card)
+    #     blackjack_game(deck)
 
 
     print ("Dealings hands...")
@@ -202,14 +229,19 @@ def blackjack_game(deck):
         print("PLAYER HAS A BLACKJACK!!!!")
         print("PLAYER WINS!!!!")
         player_rounds_won += 1
+        rounds_blackjack += 1
         blackjack_game(deck)
 
-    chance = 40
-    target = 17
  
     # Managing the player moves
     while player_score < 21:
         chance_of_bust = chances_of_busting(deck, player_score)
+        chance_of_dealer_trap = chances_of_dealer_trap(deck, dealer_cards[0].card_value)
+
+        if chances_of_dealer_trap > 35:
+            chance = 35
+        else:
+            chance = 40
 
         if chance_of_bust < chance:
 
@@ -224,6 +256,8 @@ def blackjack_game(deck):
  
             # Updating player score
             player_score += player_card.card_value
+            if player_score == 21:
+                rounds_21 += 1
  
             # Updating player score in case player's card have ace in them
             c = 0
@@ -237,6 +271,10 @@ def blackjack_game(deck):
              
         # If player decides to Stand
         if chance_of_bust >= chance:
+            if player_score < 17:
+                rounds_missed += 1
+            if player_score >= 17:
+                rounds_expected += 1
             break
  
     # Check if player has a Blackjack
@@ -310,6 +348,8 @@ def blackjack_game(deck):
  
 if __name__ == '__main__':
 
+    sys.setrecursionlimit(2500)
+
     blackjack_game.counter = 0
     # Number of rounds won by dealer and player
     global player_rounds_won
@@ -317,11 +357,19 @@ if __name__ == '__main__':
     global rounds_tied
     global rounds_skipped
     global rounds_busted
+    global rounds_missed
+    global rounds_expected
+    global rounds_blackjack
+    global rounds_21
     player_rounds_won = 0
     dealer_rounds_won = 0
     rounds_tied = 0
     rounds_skipped = 0
     rounds_busted = 0
+    rounds_missed = 0
+    rounds_expected = 0
+    rounds_blackjack = 0
+    rounds_21 = 0
  
     deck = shuffle()
 

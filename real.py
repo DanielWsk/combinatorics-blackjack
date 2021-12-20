@@ -134,7 +134,7 @@ def print_cards(cards, hidden):
 # Function that reshuffles deck
 def shuffle():
     # The type of suit
-    suits = ["Spades", "Hearts", "Clubs", "Diamonds", "Spades", "Hearts", "Clubs", "Diamonds"]
+    suits = ["Spades", "Hearts", "Clubs", "Diamonds"]
  
     # The suit value 
     suits_values = {"Spades":"\u2664", "Hearts":"\u2661", "Clubs": "\u2667", "Diamonds": "\u2662"}
@@ -226,6 +226,8 @@ def initial_hand_chances(deck):
     total_comb = comb(total_number_of_cards,2)
     probability = bad_range/total_comb
     probability = str(round(probability * 100, 2))
+    print("The bad zone is: " + str(bad_range))
+    print("The total is: " + str(total_comb))
     print ("Your chances of being in the bad zone is " +probability + "%")
 
 # Function to see if 3rd card will be between 17 and 21
