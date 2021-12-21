@@ -1,6 +1,7 @@
-# combinatorics-blackjack
-A game of blackjack that uses combinatorics to predict your odds
+# Counting Cards 
+## Using Discrete Math to Beat the House
 
+A game of blackjack that uses combinatorics and probability to create strategies to beat the house.
 
 This repo contains three files.
 
@@ -10,3 +11,5 @@ The blackjack.py file is a regular game of blackjack. As of now this game does n
 
 The simulator.py file is where the different strategies will be played out over 2000 rounds of blackjack and will print basic metrics based on the outcomes of the rounds.
 
+
+A further exploration of this project can be found here: https://www.overleaf.com/read/wrvqzzcymbgm
