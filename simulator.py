@@ -62,7 +62,7 @@ def count_deck(deck):
     cards_of_11 = sum(i.card_value==11 for i in deck)
     print("Total number of cards: " + str(total_number_of_cards))
 
-# Function to test probability of blackjack of initial hand
+# Function to test probability of blackjack on initial hand
 def chances_of_blackjack(deck):
     total_number_of_cards=len(deck)
     cards_of_10 = sum(i.card_value==10 for i in deck)
@@ -107,7 +107,7 @@ def chances_of_dealer_trap(deck, dealers_score):
     print ("Dealer's chances of being in the bad zone is " + str(probability) + "%")
     return probability
 
-# Function for probability if will be between 12 and 16 of initial hand 
+# Function for probability of player landing in the trap zone
 def initial_hand_chances(deck):
     bad_range = 0
     card_values = []
@@ -138,7 +138,7 @@ def blackjack_game(deck):
     player_score = 0
     dealer_score = 0
 
-    # Number of rounds won by dealer and player
+    # Metrics
     global player_rounds_won
     global dealer_rounds_won
     global rounds_tied
@@ -149,6 +149,7 @@ def blackjack_game(deck):
     global rounds_blackjack
     global rounds_21
 
+    # Round counter to terminate loop and print metrics
     if blackjack_game.counter == 2000:
         print("Player: " + str(player_rounds_won))
         print("Dealer: " + str(dealer_rounds_won))
@@ -164,10 +165,13 @@ def blackjack_game(deck):
     blackjack_game.counter += 1
     print ("Game Number: " + str(blackjack_game.counter))
 
+    # Reshuffle deck when deck is down to 15 cards or less
     count_deck(deck)
     if len(deck) < 15:
             deck = shuffle()
 
+
+    # Simulator checks chances of blackjack and trap zone to determine whether to play or sit out round
     chances_of_bj = chances_of_blackjack(deck)
     initial_hand = initial_hand_chances(deck)
 
@@ -179,13 +183,13 @@ def blackjack_game(deck):
             deck.remove(dead_card)
         blackjack_game(deck)
 
-    # if len(deck) > 40 and chances_of_bj < 2.5:
-    #     rounds_skipped += 1
-    #     random_number = random.randint(4,6)
-    #     for i in range(1, random_number):
-    #         dead_card = random.choice(deck)
-    #         deck.remove(dead_card)
-    #     blackjack_game(deck)
+    if len(deck) > 40 and chances_of_bj < 2.5:
+        rounds_skipped += 1
+        random_number = random.randint(4,6)
+        for i in range(1, random_number):
+            dead_card = random.choice(deck)
+            deck.remove(dead_card)
+        blackjack_game(deck)
 
 
     print ("Dealings hands...")
@@ -234,11 +238,13 @@ def blackjack_game(deck):
 
  
     # Managing the player moves
+    # Checks chances of busting and dealer landing in trap zone
     while player_score < 21:
         chance_of_bust = chances_of_busting(deck, player_score)
         chance_of_dealer_trap = chances_of_dealer_trap(deck, dealer_cards[0].card_value)
-
-        if chances_of_dealer_trap > 35:
+        
+        # First determines chances of dealer landing in trap zone to decide on player strategy
+        if chance_of_dealer_trap > 35:
             chance = 35
         else:
             chance = 40
@@ -348,10 +354,11 @@ def blackjack_game(deck):
  
 if __name__ == '__main__':
 
+    # Increase python recursion limit
     sys.setrecursionlimit(2500)
 
     blackjack_game.counter = 0
-    # Number of rounds won by dealer and player
+    # Metrics
     global player_rounds_won
     global dealer_rounds_won
     global rounds_tied
@@ -370,7 +377,8 @@ if __name__ == '__main__':
     rounds_expected = 0
     rounds_blackjack = 0
     rounds_21 = 0
- 
+    
+    # Initailize Deck
     deck = shuffle()
 
     
